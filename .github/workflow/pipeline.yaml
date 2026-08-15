@@ -14,4 +14,4 @@ jobs:
       - name: checkout code
         uses: actions/checkout@v4
       - name: build docker image
-        run: docker build -t node-js-app
+        run: docker build -t node-js-app .
