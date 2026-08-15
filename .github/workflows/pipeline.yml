@@ -7,11 +7,26 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-build-push:
     runs-on: ubuntu-latest
 
     steps:
       - name: checkout code
         uses: actions/checkout@v4
-      - name: build docker image
-        run: docker build -t node-js-app .
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+          aws-secret-access-key: ${{secrets.AWS_SECRET_KEY}}
+          aws-region: ${{secrets.AWS_REGION}}
+
+      - name: Log in to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        run:
+          docker build -t ${{secrets.ECR_REPO}}:latest .
+
+      - name: push docker image to amaozon ecr
+        run:
+          docker push {{ secrets.ECR_REPO }}: latest
