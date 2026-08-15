@@ -3,7 +3,7 @@ name: Node CI/CD pipeline
 on:
   push:
     branches:
-      -master
+      - master
   workflow_dispatch:
 
 jobs:
